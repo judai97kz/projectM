@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "93939768069",
+    "project_id": "projectm-c7702",
+    "storage_bucket": "projectm-c7702.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:93939768069:android:3d404bbd925a23fab7756c",
+        "android_client_info": {
+          "package_name": "com.judai.projectm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "93939768069-jseqtvc7cj57nh2lslrfvnsgkqmrm6cp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaphW4OZbC-gyZvfutbizgA1MwNu-Y7wY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "93939768069-jseqtvc7cj57nh2lslrfvnsgkqmrm6cp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
