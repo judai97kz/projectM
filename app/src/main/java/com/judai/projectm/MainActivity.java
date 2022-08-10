@@ -4,12 +4,17 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,21 +25,31 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     // Write a message to the database
     public static FirebaseDatabase database = FirebaseDatabase.getInstance();
     public static DatabaseReference myRef = database.getReference();
 
+    UserDatabase userdata;
+
     Button login;
     EditText username,userpassword;
-
+    ListView lvac;
     public static String FullName;
+
+    List<User> listUser;
+    UserAdapter arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AnhXa();
+        DatabaseUser();
+        ShowAccount();
         Action();
     }
 
@@ -47,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         login = findViewById(R.id.login);
         username = findViewById(R.id.username);
         userpassword = findViewById(R.id.userpassword);
+        lvac = findViewById(R.id.lv);
 //        userpassword.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_NUMBER_VARIATION_PASSWORD);
     }
 
@@ -55,7 +71,10 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               LoginAction();
+                String tk = username.getText().toString();
+                String mk = userpassword.getText().toString().trim();
+               LoginAction(tk,mk);
+                userdata.QueryData("INSERT INTO User VALUES('"+ tk +"','"+ mk +"')");
             }
         });
 
@@ -69,9 +88,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private void LoginAction(){
-        String tk = username.getText().toString();
-        String mk = userpassword.getText().toString().trim();
+    private void LoginAction(String tk,String mk){
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -139,6 +156,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
+
+    private void DatabaseUser(){
+        userdata = new UserDatabase(MainActivity.this,"Userdt.sqlite",null,1);
+        userdata.QueryData("CREATE TABLE IF NOT EXISTS User(Username VARCHAR(50) PRIMARY KEY,Pass VARCHAR(50))");
+    }
+
+    private void ShowAccount(){
+        listUser = new ArrayList<>();
+        Cursor data = userdata.getData("SELECT * FROM User");
+        while (data.moveToNext()){
+            String dtun = data.getString(0).toString();
+            String dtpw = data.getString(1).toString();
+            listUser.add(new User(dtun,dtpw));
+        }
+        arrayAdapter = new UserAdapter(MainActivity.this,listUser,R.layout.account_row);
+        lvac.setAdapter(arrayAdapter);
+        lvac.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String usdt = listUser.get(position).get_username().toString();
+                String pwdt = listUser.get(position).get_password().toString().trim();
+                LoginAction(usdt,pwdt);
             }
         });
     }
