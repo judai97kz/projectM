@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -43,7 +44,9 @@ public class SignUp extends AppCompatActivity {
         ln = findViewById(R.id.lastname);
         un = findViewById(R.id.suname);
         pw = findViewById(R.id.supass);
+        pw.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         rp = findViewById(R.id.rppass);
+        rp.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         pn = findViewById(R.id.phone);
         gm = findViewById(R.id.mail);
         su = findViewById(R.id.su);
@@ -72,45 +75,52 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String tk = un.getText().toString();
-                String mk = pw.getText().toString();
+                String mk = pw.getText().toString().trim();
                 String FN = fn.getText().toString();
                 String LN = ln.getText().toString();
-                String RP = rp.getText().toString();
+                String RP = rp.getText().toString().trim();
                 String PHONE = pn.getText().toString();
                 String MAIL = gm.getText().toString();
                 String DATE = dtv.getText().toString();
                 MainActivity.myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(mk.length() < 8)
-                        {
-                            Toast.makeText(SignUp.this,"Password must be more than 8 characters",Toast.LENGTH_SHORT).show();
+                        if (tk.equals("")==true || mk.equals("")==true || FN.equals("")==true || LN.equals("")==true || RP.equals("")==true ||
+                        PHONE.equals("")==true || MAIL.equals("")==true || DATE.equals("")==true) {
+                            Toast.makeText(SignUp.this, "You must fill in all the information!", Toast.LENGTH_SHORT).show();
                         }
-                        else
-                        {
-                            if(snapshot.hasChild("Data/"+tk))
-                            {
-                                Toast.makeText(SignUp.this,"Tên Đăng Ký Đã Có Người Sử Dụng !",Toast.LENGTH_LONG).show();
+                        else{
+                            if (mk.length() < 8) {
+                                Toast.makeText(SignUp.this, "Password must be more than 8 characters", Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (snapshot.hasChild("Data/" + tk)) {
+                                    Toast.makeText(SignUp.this, "Username is already taken!", Toast.LENGTH_LONG).show();
+
+                                } else {
+                                    if (mk.equals(RP) == true) {
+                                        if (yearold >= 18) {
+                                            Toast.makeText(SignUp.this, "Sign Up Success!", Toast.LENGTH_LONG).show();
+                                            MainActivity.myRef.child("Data/" + tk + "/username").setValue(tk);
+                                            MainActivity.myRef.child("Data/" + tk + "/pass").setValue(mk);
+                                            MainActivity.myRef.child("Data/" + tk + "/firstname").setValue(FN);
+                                            MainActivity.myRef.child("Data/" + tk + "/lastname").setValue(LN);
+                                            MainActivity.myRef.child("Data/" + tk + "/phone").setValue(PHONE);
+                                            MainActivity.myRef.child("Data/" + tk + "/mail").setValue(MAIL);
+                                            MainActivity.myRef.child("Data/" + tk + "/date").setValue(DATE);
+                                            MainActivity.myRef.child("Data/" + tk + "/join").push().setValue("Phong chung");
+                                            Intent intent = new Intent(SignUp.this, MainActivity.class);
+                                            startActivity(intent);
+                                        } else {
+                                            Toast.makeText(SignUp.this, "You are so young to use my app!", Toast.LENGTH_LONG).show();
+                                        }
+                                    } else {
+                                        rp.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                                        Toast.makeText(SignUp.this, "The repeat password does not match the original password!", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
 
                             }
-                            else {
-                                if(yearold >= 18) {
-                                    Toast.makeText(SignUp.this, "Tài khoản đăng ký thành công !", Toast.LENGTH_LONG).show();
-                                    MainActivity.myRef.child("Data/" + tk + "/username").setValue(tk);
-                                    MainActivity.myRef.child("Data/" + tk + "/pass").setValue(mk);
-                                    MainActivity.myRef.child("Data/" + tk + "/firstname").setValue(FN);
-                                    MainActivity.myRef.child("Data/" + tk + "/lastname").setValue(LN);
-                                    MainActivity.myRef.child("Data/" + tk + "/phone").setValue(PHONE);
-                                    MainActivity.myRef.child("Data/" + tk + "/mail").setValue(MAIL);
-                                    MainActivity.myRef.child("Data/" + tk + "/date").setValue(DATE);
-                                    MainActivity.myRef.child("Data/" + tk + "/join").push().setValue("Phong chung");
-                                }else
-                                {
-                                    Toast.makeText(SignUp.this,"You are so young to use my app !",Toast.LENGTH_LONG).show();
-                                }
-                            }
-                            Intent intent = new Intent(SignUp.this,MainActivity.class);
-                            startActivity(intent);
                         }
 
                     }
