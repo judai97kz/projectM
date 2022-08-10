@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,77 +55,7 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               String tk = username.getText().toString();
-               String mk = userpassword.getText().toString().trim();
-               myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                   @Override
-                   public void onDataChange(@NonNull DataSnapshot snapshot) {
-                       if (snapshot.hasChild("Data/" + tk)){
-                           myRef.child("Data/" + tk + "/username").addListenerForSingleValueEvent(new ValueEventListener() {
-                               @Override
-                               public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                   String ct = snapshot.getValue().toString();
-                                   myRef.child("Data/" + tk + "/pass").addListenerForSingleValueEvent(new ValueEventListener() {
-                                       @Override
-                                       public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                           String cp = snapshot.getValue().toString();
-                                           if (mk.equals(cp) == true && tk.equals(ct) == true) {
-                                              myRef.child("Data/" + tk + "/firstname").addValueEventListener(new ValueEventListener() {
-                                                  @Override
-                                                  public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                      String first = snapshot.getValue().toString();
-                                                      myRef.child("Data/"+tk+"/lastname").addValueEventListener(new ValueEventListener() {
-                                                          @Override
-                                                          public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                            String last = snapshot.getValue().toString();
-                                                            FullName = first.concat(" ");
-                                                            FullName = FullName.concat(last);
-                                                              Intent i1 = new Intent(MainActivity.this, RoomChat.class);
-                                                              startActivity(i1);
-                                                          }
-
-                                                          @Override
-                                                          public void onCancelled(@NonNull DatabaseError error) {
-
-                                                          }
-                                                      });
-                                                  }
-
-                                                  @Override
-                                                  public void onCancelled(@NonNull DatabaseError error) {
-
-                                                  }
-                                              });
-                                           }
-                                           else
-                                           {
-                                               Toast.makeText(MainActivity.this, "Password is incorrect!", Toast.LENGTH_LONG).show();
-                                           }
-                                       }
-
-                                       @Override
-                                       public void onCancelled(@NonNull DatabaseError error) {
-
-                                       }
-                                   });
-                               }
-
-                               @Override
-                               public void onCancelled(@NonNull DatabaseError error) {
-
-                               }
-                           });
-                       }
-                       else{
-                           Toast.makeText(MainActivity.this,"Username is incorrect or does not exist !",Toast.LENGTH_LONG).show();
-                       }
-                   }
-
-                   @Override
-                   public void onCancelled(@NonNull DatabaseError error) {
-
-                   }
-               });
+               LoginAction();
             }
         });
 
@@ -136,5 +67,79 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "back press",
                     Toast.LENGTH_LONG).show();
         return false;
+    }
+
+    private void LoginAction(){
+        String tk = username.getText().toString();
+        String mk = userpassword.getText().toString().trim();
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.hasChild("Data/" + tk)){
+                    myRef.child("Data/" + tk + "/username").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String ct = snapshot.getValue().toString();
+                            myRef.child("Data/" + tk + "/pass").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    String cp = snapshot.getValue().toString();
+                                    if (mk.equals(cp) == true && tk.equals(ct) == true) {
+                                        myRef.child("Data/" + tk + "/firstname").addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                String first = snapshot.getValue().toString();
+                                                myRef.child("Data/"+tk+"/lastname").addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        String last = snapshot.getValue().toString();
+                                                        FullName = first.concat(" ");
+                                                        FullName = FullName.concat(last);
+                                                        Intent i1 = new Intent(MainActivity.this, RoomChat.class);
+                                                        startActivity(i1);
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(MainActivity.this, "Password is incorrect!", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(MainActivity.this,"Username is incorrect or does not exist !",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
