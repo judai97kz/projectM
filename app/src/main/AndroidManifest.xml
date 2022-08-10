@@ -16,6 +16,9 @@
         android:theme="@style/Theme.ProjectM"
         tools:targetApi="31">
         <activity
+            android:name=".Chat"
+            android:exported="false" />
+        <activity
             android:name=".RoomChat"
             android:exported="false" />
         <activity

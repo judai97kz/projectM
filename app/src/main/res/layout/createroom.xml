@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/vien">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="ID ROOM"
+        android:id="@+id/idroom"
+        android:gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="PASS ROOM"
+        android:id="@+id/passroom"
+        android:gravity="center"
+        android:password="true"
+        android:layout_below="@+id/idroom"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
+    <RelativeLayout
+        android:id="@+id/rlblank"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/passroom"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CREATE"
+        android:id="@+id/btcreate"
+        android:layout_below="@+id/passroom"
+        android:layout_toLeftOf="@+id/rlblank"/>
+
+    <Button
+        android:id="@+id/btcancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/passroom"
+        android:layout_toRightOf="@+id/rlblank"
+        android:text="CANCEL" />
+
+
+</RelativeLayout>

@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     EditText username,userpassword;
     ListView lvac;
     public static String FullName;
+    public static String Username;
 
     List<User> listUser;
     UserAdapter arrayAdapter;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String tk = username.getText().toString();
                 String mk = userpassword.getText().toString().trim();
-               LoginAction(tk,mk);
+                LoginAction(tk,mk);
                 userdata.QueryData("INSERT INTO User VALUES('"+ tk +"','"+ mk +"')");
             }
         });
@@ -82,9 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode==KeyEvent.KEYCODE_BACK)
-            Toast.makeText(getApplicationContext(), "back press",
-                    Toast.LENGTH_LONG).show();
         return false;
     }
 
@@ -112,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                                                         String last = snapshot.getValue().toString();
                                                         FullName = first.concat(" ");
                                                         FullName = FullName.concat(last);
+                                                        Username = tk;
                                                         Intent i1 = new Intent(MainActivity.this, RoomChat.class);
                                                         startActivity(i1);
                                                     }
