@@ -1,6 +1,8 @@
 package com.judai.projectm;
 
 import android.content.Intent;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -11,8 +13,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     // Write a message to the database
@@ -22,11 +27,14 @@ public class MainActivity extends AppCompatActivity {
     Button login;
     EditText username,userpassword;
 
+    public static String FullName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        AnhXa();
+        Action();
     }
 
     public void Nhap(View view){
@@ -46,11 +54,74 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = userpassword.getText().toString();
-                Toast.makeText(MainActivity.this,text,Toast.LENGTH_LONG).show();
-                if(text.equals("1")==true){
-                    Toast.makeText(MainActivity.this,"ổn",Toast.LENGTH_LONG).show();
-                }
+               String tk = username.getText().toString();
+               String mk = userpassword.getText().toString().trim();
+               myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(@NonNull DataSnapshot snapshot) {
+                       if (snapshot.hasChild("Data/" + tk)){
+                           myRef.child("Data/" + tk + "/username").addListenerForSingleValueEvent(new ValueEventListener() {
+                               @Override
+                               public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                   String ct = snapshot.getValue().toString();
+                                   myRef.child("Data/" + tk + "/pass").addListenerForSingleValueEvent(new ValueEventListener() {
+                                       @Override
+                                       public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                           String cp = snapshot.getValue().toString();
+                                           if (mk.equals(cp) == true && tk.equals(ct) == true) {
+                                              myRef.child("Data/" + tk + "/firstname").addValueEventListener(new ValueEventListener() {
+                                                  @Override
+                                                  public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                      String first = snapshot.getValue().toString();
+                                                      myRef.child("Data/"+tk+"/lastname").addValueEventListener(new ValueEventListener() {
+                                                          @Override
+                                                          public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            String last = snapshot.getValue().toString();
+                                                            FullName = first.concat(" ");
+                                                            FullName = FullName.concat(last);
+                                                              Intent i1 = new Intent(MainActivity.this, RoomChat.class);
+                                                              startActivity(i1);
+                                                          }
+
+                                                          @Override
+                                                          public void onCancelled(@NonNull DatabaseError error) {
+
+                                                          }
+                                                      });
+                                                  }
+
+                                                  @Override
+                                                  public void onCancelled(@NonNull DatabaseError error) {
+
+                                                  }
+                                              });
+                                           }
+                                           else
+                                           {
+                                               Toast.makeText(MainActivity.this, "Mật Khẩu Hoặc Không Đúng!", Toast.LENGTH_LONG).show();
+                                           }
+                                       }
+
+                                       @Override
+                                       public void onCancelled(@NonNull DatabaseError error) {
+
+                                       }
+                                   });
+                               }
+
+                               @Override
+                               public void onCancelled(@NonNull DatabaseError error) {
+
+                               }
+                           });
+                       }
+                   }
+
+                   @Override
+                   public void onCancelled(@NonNull DatabaseError error) {
+
+                   }
+               });
             }
         });
 
