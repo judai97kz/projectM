@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                                            }
                                            else
                                            {
-                                               Toast.makeText(MainActivity.this, "Mật Khẩu Hoặc Không Đúng!", Toast.LENGTH_LONG).show();
+                                               Toast.makeText(MainActivity.this, "Password is incorrect!", Toast.LENGTH_LONG).show();
                                            }
                                        }
 
@@ -114,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
 
                                }
                            });
+                       }
+                       else{
+                           Toast.makeText(MainActivity.this,"Username is incorrect or does not exist !",Toast.LENGTH_LONG).show();
                        }
                    }
 
