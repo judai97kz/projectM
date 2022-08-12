@@ -5,50 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RoomChat">
-   <RelativeLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:background="@color/black"
-       android:id="@+id/rlroom">
-       <RelativeLayout
-           android:layout_width="match_parent"
-           android:layout_height="40dp"
-           android:layout_toLeftOf="@id/buttonmenu"
-           android:layout_centerVertical="true"
-           android:layout_marginStart="10dp"
-           android:layout_marginEnd="10dp">
-           <EditText
-               android:layout_centerVertical="true"
-               android:layout_width="match_parent"
-               android:layout_height="30dp"
-               android:background="@color/white"
-               android:hint="Tìm kiếm"/>
-
-           <ImageButton
-               android:id="@+id/search"
-               android:layout_width="40dp"
-               android:layout_height="40dp"
-               android:layout_centerVertical="true"
-               android:layout_alignParentRight="true"
-               android:layout_marginRight="-3dp"
-               android:src="@drawable/earch" />
-       </RelativeLayout>
-
-       <ImageButton
-           android:layout_margin="2dp"
-           android:id="@+id/buttonmenu"
-           android:layout_width="40dp"
-           android:layout_height="40dp"
-           android:background="@drawable/img_vien"
-           android:layout_alignParentRight="true"
-           android:layout_centerVertical="true"
-           android:layout_marginEnd="20dp"
-           android:src="@drawable/ic_baseline_settings_24"/>
-   </RelativeLayout>
     <ListView
         android:id="@+id/lv"
-        android:layout_below="@+id/rlroom"
+        android:layout_below="@+id/floating_search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/vien"/>
+    <com.arlib.floatingsearchview.FloatingSearchView
+        android:background="@drawable/vien"
+        android:id="@+id/floating_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:floatingSearch_searchBarMarginLeft="5dp"
+        app:floatingSearch_searchBarMarginTop="5dp"
+        app:floatingSearch_searchBarMarginRight="5dp"
+        app:floatingSearch_searchHint="Enter the room you are looking for..."
+        app:floatingSearch_suggestionsListAnimDuration="10"
+        app:floatingSearch_showSearchKey="true"
+        app:floatingSearch_leftActionMode="showHamburger"
+        app:floatingSearch_close_search_on_keyboard_dismiss="true"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp"
+
+        />
+    <ImageButton
+        android:layout_margin="2dp"
+        android:id="@+id/buttonmenu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/img_vien"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_baseline_settings_24"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:padding="20dp"/>
 </RelativeLayout>

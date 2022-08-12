@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
     List<User> listUser;
     UserAdapter arrayAdapter;
-
+    int i=0;
+    public static int check=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,10 +76,15 @@ public class MainActivity extends AppCompatActivity {
                 String tk = username.getText().toString();
                 String mk = userpassword.getText().toString().trim();
                 LoginAction(tk,mk);
-                userdata.QueryData("INSERT INTO User VALUES('"+ tk +"','"+ mk +"')");
+
+
             }
         });
-
+        if(RoomChat.keycheck == 1){
+            String usdt = listUser.get(0).get_username().toString();
+            String pwdt = listUser.get(0).get_password().toString().trim();
+            LoginAction(usdt,pwdt);
+        }
     }
 
     @Override
@@ -87,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void LoginAction(String tk,String mk){
+
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -111,6 +118,27 @@ public class MainActivity extends AppCompatActivity {
                                                         FullName = first.concat(" ");
                                                         FullName = FullName.concat(last);
                                                         Username = tk;
+                                                        if(check==0){
+                                                            Cursor data = userdata.getData("SELECT * FROM User");
+                                                            if(data.getCount()!=0)
+                                                            {
+                                                                userdata.QueryData("INSERT INTO User VALUES('"+ tk +"','"+ mk +"')");
+                                                            }else{
+                                                                while (data.moveToNext()){
+                                                                    String dtun = data.getString(0).toString().trim();
+                                                                    if(tk.trim().equals(dtun)==true){
+                                                                        i++;
+                                                                        break;
+                                                                    }
+                                                                    else{
+                                                                        i=0;
+                                                                    }
+                                                                }
+                                                                if(i==0){
+                                                                    userdata.QueryData("INSERT INTO User VALUES('"+ tk +"','"+ mk +"')");
+                                                                }
+                                                            }
+                                                        }
                                                         Intent i1 = new Intent(MainActivity.this, RoomChat.class);
                                                         startActivity(i1);
                                                     }
@@ -130,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                     else
                                     {
+                                        userpassword.setTextColor(getResources().getColor(R.color.red));
                                         Toast.makeText(MainActivity.this, "Password is incorrect!", Toast.LENGTH_LONG).show();
                                     }
                                 }
@@ -180,6 +209,14 @@ public class MainActivity extends AppCompatActivity {
                 String usdt = listUser.get(position).get_username().toString();
                 String pwdt = listUser.get(position).get_password().toString().trim();
                 LoginAction(usdt,pwdt);
+                check=1;
+            }
+        });
+        lvac.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                String usdt = listUser.get(position).get_username().toString();
+                return true;
             }
         });
     }

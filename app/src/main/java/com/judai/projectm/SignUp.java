@@ -28,7 +28,6 @@ public class SignUp extends AppCompatActivity {
     private int lastSelectedYear;
     private int lastSelectedMonth;
     private int lastSelectedDayOfMonth;
-
     public int yearold;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +107,8 @@ public class SignUp extends AppCompatActivity {
                                             MainActivity.myRef.child("Data/" + tk + "/mail").setValue(MAIL);
                                             MainActivity.myRef.child("Data/" + tk + "/date").setValue(DATE);
                                             MainActivity.myRef.child("Data/" + tk + "/join").push().setValue("Phong chung");
+                                            MainActivity.myRef.child("Room/Phong chung/id").setValue("Phong chung");
+                                            MainActivity.myRef.child("Room/Phong chung/chat");
                                             Intent intent = new Intent(SignUp.this, MainActivity.class);
                                             startActivity(intent);
                                         } else {
@@ -124,7 +125,6 @@ public class SignUp extends AppCompatActivity {
                         }
 
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 

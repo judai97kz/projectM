@@ -36,13 +36,25 @@ public class UserAdapter extends BaseAdapter {
         return 0;
     }
 
+    private class ViewHolder{
+        TextView textView;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(layout,null);
-        TextView textView = convertView.findViewById(R.id.nameac);
+        ViewHolder holder;
+        if(convertView == null){
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(layout,null);
+            holder = new ViewHolder();
+             holder.textView = convertView.findViewById(R.id.nameac);
+             convertView.setTag(holder);
+        }else{
+            holder = (ViewHolder) convertView.getTag();
+        }
+
         User user = arrayList.get(position);
-        textView.setText(user.get_username());
+        holder.textView.setText(user.get_username());
         return convertView;
     }
 }

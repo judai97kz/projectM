@@ -4,23 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <com.makeramen.roundedimageview.RoundedImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity"
+    android:background="@drawable/img_vien"
+    android:layout_margin="10dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/img"
-        android:src="@drawable/logo"
-        android:scaleType="fitCenter"
-        app:riv_corner_radius="30dip"
-        app:riv_border_width="2dip"
-        app:riv_border_color="#333333"
-        app:riv_mutate_background="true"
-        app:riv_tile_mode="repeat"
-        app:riv_oval="true"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo"
+        app:riv_border_color="#333333"
+        app:riv_border_width="2dip"
+        app:riv_corner_radius="30dip"
+        app:riv_mutate_background="true"
+        app:riv_oval="true"
+        />
     <EditText
+        android:background="@drawable/vien"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -31,6 +34,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"/>
     <EditText
+        android:layout_marginTop="5dp"
+        android:background="@drawable/vien"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/userpassword"
@@ -57,15 +62,15 @@
             android:text="Login" />
 
         <TextView
+            android:background="@drawable/img_vien"
             android:id="@+id/signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="Nhap"
-            android:text="Sign up"
             android:layout_below="@id/login"
             android:layout_alignParentRight="true"
             android:layout_marginEnd="10dp"
-            />
+            android:onClick="Nhap"
+            android:text="Sign up" />
     </RelativeLayout>
     <ListView
         android:layout_margin="10dp"

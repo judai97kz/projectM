@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/vien">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvir"
+        android:text="Hien thi"
+        android:textSize="20sp"
+        android:padding="20dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvir"
+        android:id="@+id/etir"
+        android:hint="(Import password to room)"
+        android:gravity="center"/>
+    <RelativeLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/rlbl"
+        android:layout_below="@id/etir"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etir"
+        android:layout_toLeftOf="@id/rlbl"
+        android:id="@+id/okir"
+        android:text="OK"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etir"
+        android:layout_toRightOf="@id/rlbl"
+        android:text="Cancel"
+        android:id="@+id/cancelir"/>
+
+
+
+
+</RelativeLayout>
