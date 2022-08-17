@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <com.arlib.floatingsearchview.FloatingSearchView
+        android:background="@drawable/vien"
+        android:id="@+id/floating_member"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:floatingSearch_searchBarMarginLeft="5dp"
+        app:floatingSearch_searchBarMarginTop="5dp"
+        app:floatingSearch_searchBarMarginRight="5dp"
+        app:floatingSearch_searchHint="Enter the room you are looking for..."
+        app:floatingSearch_suggestionsListAnimDuration="10"
+        app:floatingSearch_showSearchKey="true"
+        app:floatingSearch_leftActionMode="showHamburger"
+        app:floatingSearch_close_search_on_keyboard_dismiss="true"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btadd"
+        android:layout_below="@id/floating_member"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btdel"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/floating_member"/>
+</RelativeLayout>

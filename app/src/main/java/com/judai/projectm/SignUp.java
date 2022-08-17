@@ -24,7 +24,7 @@ import java.util.Date;
 public class SignUp extends AppCompatActivity {
     EditText fn,ln,un,pw,rp,pn,gm,dtv;
     Button su,cc,dbt;
-
+    public String funa;
     private int lastSelectedYear;
     private int lastSelectedMonth;
     private int lastSelectedDayOfMonth;
@@ -109,6 +109,9 @@ public class SignUp extends AppCompatActivity {
                                             MainActivity.myRef.child("Data/" + tk + "/join").push().setValue("Phong chung");
                                             MainActivity.myRef.child("Room/Phong chung/id").setValue("Phong chung");
                                             MainActivity.myRef.child("Room/Phong chung/chat");
+                                            funa = FN.concat(" ");
+                                            funa = funa.concat(LN);
+                                            MainActivity.myRef.child("Room/Phong chung/member").push().setValue(funa + " - " + tk);
                                             Intent intent = new Intent(SignUp.this, MainActivity.class);
                                             startActivity(intent);
                                         } else {

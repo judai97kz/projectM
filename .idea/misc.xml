@@ -7,12 +7,15 @@
         <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.131" />
         <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/drawable/img_vien.xml" value="0.1745" />
         <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/drawable/vien.xml" value="0.2165" />
+        <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/drawable/vien_tron.xml" value="0.1175" />
         <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/account_row.xml" value="0.16875" />
-        <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/activity_chat.xml" value="0.1484375" />
+        <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/activity_chat.xml" value="0.5145228215767634" />
         <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/activity_menu_room.xml" value="0.25" />
-        <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/activity_room_chat.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/activity_room_chat.xml" value="0.33" />
+        <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/activity_setting_room.xml" value="0.21" />
         <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/activity_sign_up.xml" value="0.33" />
+        <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/add_member.xml" value="0.17291666666666666" />
         <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/createroom.xml" value="0.422279792746114" />
         <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/in_room.xml" value="0.18" />
         <entry key="..\:/Users/judai/Documents/PJA/File/projectM/app/src/main/res/layout/layout.xml" value="0.1953125" />

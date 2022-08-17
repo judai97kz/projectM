@@ -5,8 +5,10 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,31 +38,37 @@ public class MainActivity extends AppCompatActivity {
     UserDatabase userdata;
 
     Button login;
-    EditText username,userpassword;
+    EditText username, userpassword;
     ListView lvac;
     public static String FullName;
     public static String Username;
 
+    public static SharedPreferences sharedPreferences;
+    public SharedPreferences.Editor editor;
+
     List<User> listUser;
     UserAdapter arrayAdapter;
-    int i=0;
-    public static int check=0;
+    int i = 0;
+    public static int check = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPreferences = getSharedPreferences("Datacaching", MODE_PRIVATE);
         AnhXa();
+        processUN();
         DatabaseUser();
         ShowAccount();
         Action();
     }
 
-    public void Nhap(View view){
-        Intent intent = new Intent(MainActivity.this,SignUp.class);
+    public void Nhap(View view) {
+        Intent intent = new Intent(MainActivity.this, SignUp.class);
         startActivity(intent);
     }
 
-    private void AnhXa(){
+    private void AnhXa() {
         login = findViewById(R.id.login);
         username = findViewById(R.id.username);
         userpassword = findViewById(R.id.userpassword);
@@ -68,36 +76,35 @@ public class MainActivity extends AppCompatActivity {
 //        userpassword.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_NUMBER_VARIATION_PASSWORD);
     }
 
-    private void Action()
-    {
+    private void Action() {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String tk = username.getText().toString();
                 String mk = userpassword.getText().toString().trim();
-                LoginAction(tk,mk);
-
-
+                if (tk.equals("") == true || mk.equals("") == true) {
+                    Toast.makeText(MainActivity.this, "Please enter your username and password!", Toast.LENGTH_LONG).show();
+                } else {
+                    LoginAction(tk,mk);
+                }
             }
         });
-        if(RoomChat.keycheck == 1){
+        if (RoomChat.keycheck == 1) {
             String usdt = listUser.get(0).get_username().toString();
             String pwdt = listUser.get(0).get_password().toString().trim();
-            LoginAction(usdt,pwdt);
+            LoginAction(usdt, pwdt);
         }
     }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return false;
     }
 
-    private void LoginAction(String tk,String mk){
-
+    private void LoginAction(String tk, String mk) {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild("Data/" + tk)){
+                if (snapshot.hasChild("Data/" + tk)) {
                     myRef.child("Data/" + tk + "/username").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -111,31 +118,30 @@ public class MainActivity extends AppCompatActivity {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                 String first = snapshot.getValue().toString();
-                                                myRef.child("Data/"+tk+"/lastname").addValueEventListener(new ValueEventListener() {
+                                                myRef.child("Data/" + tk + "/lastname").addValueEventListener(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        initPreferences(tk,mk);
                                                         String last = snapshot.getValue().toString();
                                                         FullName = first.concat(" ");
                                                         FullName = FullName.concat(last);
                                                         Username = tk;
-                                                        if(check==0){
+                                                        if (check == 0) {
                                                             Cursor data = userdata.getData("SELECT * FROM User");
-                                                            if(data.getCount()!=0)
-                                                            {
-                                                                userdata.QueryData("INSERT INTO User VALUES('"+ tk +"','"+ mk +"')");
-                                                            }else{
-                                                                while (data.moveToNext()){
+                                                            if (data.getCount() == 0) {
+                                                                userdata.QueryData("INSERT INTO User VALUES('" + tk + "','" + mk + "')");
+                                                            } else {
+                                                                while (data.moveToNext()) {
                                                                     String dtun = data.getString(0).toString().trim();
-                                                                    if(tk.trim().equals(dtun)==true){
+                                                                    if (tk.equals(dtun) == false) {
                                                                         i++;
+                                                                    } else {
+                                                                        i = 0;
                                                                         break;
                                                                     }
-                                                                    else{
-                                                                        i=0;
-                                                                    }
                                                                 }
-                                                                if(i==0){
-                                                                    userdata.QueryData("INSERT INTO User VALUES('"+ tk +"','"+ mk +"')");
+                                                                if (i != 0) {
+                                                                    userdata.QueryData("INSERT INTO User VALUES('" + tk + "','" + mk + "')");
                                                                 }
                                                             }
                                                         }
@@ -155,9 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
                                             }
                                         });
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         userpassword.setTextColor(getResources().getColor(R.color.red));
                                         Toast.makeText(MainActivity.this, "Password is incorrect!", Toast.LENGTH_LONG).show();
                                     }
@@ -175,9 +179,8 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     });
-                }
-                else{
-                    Toast.makeText(MainActivity.this,"Username is incorrect or does not exist !",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Username is incorrect or does not exist !", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -188,28 +191,28 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void DatabaseUser(){
-        userdata = new UserDatabase(MainActivity.this,"Userdt.sqlite",null,1);
+    private void DatabaseUser() {
+        userdata = new UserDatabase(MainActivity.this, "Userdt.sqlite", null, 1);
         userdata.QueryData("CREATE TABLE IF NOT EXISTS User(Username VARCHAR(50) PRIMARY KEY,Pass VARCHAR(50))");
     }
 
-    private void ShowAccount(){
+    private void ShowAccount() {
         listUser = new ArrayList<>();
         Cursor data = userdata.getData("SELECT * FROM User");
-        while (data.moveToNext()){
+        while (data.moveToNext()) {
             String dtun = data.getString(0).toString();
             String dtpw = data.getString(1).toString();
-            listUser.add(new User(dtun,dtpw));
+            listUser.add(new User(dtun, dtpw));
         }
-        arrayAdapter = new UserAdapter(MainActivity.this,listUser,R.layout.account_row);
+        arrayAdapter = new UserAdapter(MainActivity.this, listUser, R.layout.account_row);
         lvac.setAdapter(arrayAdapter);
         lvac.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String usdt = listUser.get(position).get_username().toString();
                 String pwdt = listUser.get(position).get_password().toString().trim();
-                LoginAction(usdt,pwdt);
-                check=1;
+                LoginAction(usdt, pwdt);
+                check = 1;
             }
         });
         lvac.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -220,4 +223,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void initPreferences(String name, String pass) {
+        editor = sharedPreferences.edit();
+        editor.putString("Username", name);
+        editor.putString("Password", pass);
+        editor.commit();
+    }
+
+    public void processUN(){
+        String namelocal = sharedPreferences.getString("Username","");
+        String passlocal = sharedPreferences.getString("Password","");
+        if(namelocal.equals("")==true || passlocal.equals("")==true){
+            Toast.makeText(this,sharedPreferences.getString("Username",""),Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            LoginAction(namelocal,passlocal);
+        }
+    }
 }
+

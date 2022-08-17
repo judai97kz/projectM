@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingRoom">
+    <RelativeLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rlmb">
+
+        <ImageButton
+            android:id="@+id/btr"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@color/transparent"
+            android:src="@drawable/backarrow" />
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/vien_tron"
+            android:src="@drawable/ic_baseline_person_add_24"
+            android:id="@+id/addfr"
+            android:layout_toLeftOf="@id/bl1"/>
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/vien_tron"
+            android:src="@drawable/ic_baseline_delete_24"
+            android:layout_toRightOf="@id/bl1"
+            android:id="@+id/delbox"/>
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="10dp"
+            android:id="@+id/bl1"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lvmb"
+        android:background="@drawable/vien"
+        android:layout_margin="25dp"
+        android:layout_below="@+id/rlmb"/>
+</RelativeLayout>

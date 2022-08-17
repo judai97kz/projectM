@@ -9,6 +9,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,6 +61,8 @@ public class RoomChat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_chat);
+        TextView tvfn = findViewById(R.id.tvfn);
+        tvfn.setText(MainActivity.FullName);
         btmenu = findViewById(R.id.buttonmenu);
         btmenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +77,6 @@ public class RoomChat extends AppCompatActivity {
         ActionButton();
         initData();
         SearchAction();
-
     }
 
     private void ShowDatalistRoom(){
@@ -147,8 +149,14 @@ public class RoomChat extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         MainActivity.check =0;
+                        SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
+                        editor.remove("Username");
+                        editor.remove("Password");
+                        editor.commit();
                         Intent intent = new Intent(RoomChat.this,MainActivity.class);
                         startActivity(intent);
+
+
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -239,6 +247,13 @@ public class RoomChat extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String a = adapter1.getItem(position).toString().trim();
                 ROOM=a;
+                if (ROOM.equals("Phong chung")==true){
+
+                }
+                else{
+                    MainActivity.myRef.child("Room/"+ ROOM +"/member").push().setValue(MainActivity.FullName+" - "+ nameuser);
+                }
+
                 Intent i2 = new Intent(RoomChat.this,Chat.class);
                 startActivity(i2);
             }
@@ -283,7 +298,6 @@ public class RoomChat extends AppCompatActivity {
                         Toast.makeText(RoomChat.this,databaseError.toString(),Toast.LENGTH_SHORT).show();
                     }
                 });
-
                 return true;
             }
         });
@@ -297,7 +311,6 @@ public class RoomChat extends AppCompatActivity {
 
     private void SearchAction(){
         final FloatingSearchView searchView= (FloatingSearchView) findViewById(R.id.floating_search_view);
-
         searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
             public void onSearchTextChanged(String oldQuery, String newQuery) {
@@ -363,6 +376,7 @@ public class RoomChat extends AppCompatActivity {
                                     if(cpass.equals("")==true){
                                         ROOM=suggestion.getmName().toString().trim();
                                         MainActivity.myRef.child("Data/"+MainActivity.Username.toString().trim()+"/join").push().setValue(suggestion.getmName().toString().trim());
+                                        MainActivity.myRef.child("Room/"+ ROOM +"/member").push().setValue(MainActivity.FullName+" - "+ nameuser);
                                         Intent i2 = new Intent(RoomChat.this,Chat.class);
                                         startActivity(i2);
                                     }
@@ -370,6 +384,7 @@ public class RoomChat extends AppCompatActivity {
                                         if(edir.getText().toString().equals(cpass)==true){
                                             ROOM=suggestion.getmName().toString().trim();
                                             MainActivity.myRef.child("Data/"+MainActivity.Username.toString().trim()+"/join").push().setValue(suggestion.getmName().toString().trim());
+                                            MainActivity.myRef.child("Room/"+ ROOM +"/member").push().setValue(MainActivity.FullName+" - "+ nameuser);
                                             Intent i2 = new Intent(RoomChat.this,Chat.class);
                                             startActivity(i2);
                                         }
@@ -395,9 +410,6 @@ public class RoomChat extends AppCompatActivity {
                         }
                     });
                 }
-
-
-
             }
             @Override
             public void onSearchAction(String currentQuery) {
